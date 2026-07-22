@@ -1,0 +1,365 @@
+/* ==========================================================================
+   ARQUIVO PRINCIPAL - ORQUESTRADOR DE MÓDULOS CSS
+   ========================================================================== */
+@import 'variables.css';
+@import 'layout.css';
+@import 'components.css';
+
+/* ==========================================================================
+   1. VARIÁVEIS DE DESIGN & REGRAS GERAIS (CSS Custom Properties)
+   ========================================================================== */
+:root {
+    /* Paleta de Cores Moderna (Dark/Light Tech Mode) */
+    --cor-bg-primary: #0f172a;
+    --cor-bg-card: rgba(30, 41, 59, 0.7);
+    --cor-bg-input: #1e293b;
+    --cor-border: rgba(255, 255, 255, 0.1);
+    --cor-border-active: #6366f1;
+
+    --cor-texto: #f8fafc;
+    --cor-texto-mutado: #94a3b8;
+
+    --gradiente-primary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --gradiente-hover: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+    --gradiente-accent: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+
+    --sombra-card: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    --sombra-glow: 0 0 20px rgba(99, 102, 241, 0.4);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --transicao-suave: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset Global */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--cor-bg-primary);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--cor-texto);
+    min-height: 100vh;
+    line-height: 1.6;
+    padding-bottom: 50px;
+}
+
+/* ==========================================================================
+   2. CABEÇALHO & NAVEGAÇÃO INTERATIVA
+   ========================================================================== */
+.cabecalho-principal {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--cor-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cabecalho-principal h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: var(--gradiente-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.menu-navegacao {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.btn-aba {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--cor-border);
+    color: var(--cor-texto-mutado);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transicao-suave);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-aba:hover {
+    color: var(--cor-texto);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-aba.ativo,
+.btn-aba:focus {
+    background: var(--gradiente-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--sombra-glow);
+}
+
+/* ==========================================================================
+   3. LAYOUT PRINCIPAL & ABAS (ANIMAÇÃO DE ENTRADA)
+   ========================================================================== */
+.conteudo-principal {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.aba-conteudo {
+    background: var(--cor-bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--cor-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--sombra-card);
+    animation: esmaecerEntrada 0.4s ease-out forwards;
+}
+
+@keyframes esmaecerEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.aba-conteudo h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.aba-conteudo h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1.2rem;
+    background: var(--gradiente-primary);
+    border-radius: 2px;
+}
+
+.divisor {
+    border: none;
+    height: 1px;
+    background: var(--cor-border);
+    margin: 2.5rem 0;
+}
+
+/* ==========================================================================
+   4. FORMULÁRIOS & INPUTS MODERNOS
+   ========================================================================== */
+.formulario-cadastro,
+.formulario-resposta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.grupo-campo-duplo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--cor-texto-mutado);
+    transition: var(--transicao-suave);
+}
+
+.campo-input,
+.campo-select,
+.campo-textarea {
+    width: 100%;
+    background-color: var(--cor-bg-input);
+    border: 1px solid var(--cor-border);
+    color: var(--cor-texto);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transicao-suave);
+}
+
+.campo-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.campo-input:focus,
+.campo-select:focus,
+.campo-textarea:focus {
+    border-color: var(--cor-border-active);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    background-color: rgba(30, 41, 59, 0.9);
+}
+
+.campo-input::placeholder,
+.campo-textarea::placeholder {
+    color: rgba(148, 163, 184, 0.5);
+}
+
+/* ==========================================================================
+   5. BOTÕES COM ANIMACÃO E HOVER EFFECT
+   ========================================================================== */
+.btn-primario {
+    background: var(--gradiente-primary);
+    color: white;
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transicao-suave);
+    box-shadow: var(--sombra-glow);
+    align-self: flex-start;
+    margin-top: 0.5rem;
+}
+
+.btn-primario:hover {
+    background: var(--gradiente-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+}
+
+.btn-primario:active {
+    transform: translateY(0);
+}
+
+.btn-secundario {
+    background: transparent;
+    border: 1px dashed var(--cor-border-active);
+    color: #818cf8;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transicao-suave);
+    margin-top: 0.5rem;
+}
+
+.btn-secundario:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #a5b4fc;
+}
+
+/* ==========================================================================
+   6. CARDS, LISTAS E CAIXAS DINÂMICAS
+   ========================================================================== */
+.painel-alternativas {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--cor-border);
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    animation: esmaecerEntrada 0.3s ease;
+}
+
+.conteiner-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 1rem 0;
+}
+
+.lista-itens,
+.lista-cards {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.lista-itens li,
+.card-item {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--cor-border);
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-md);
+    transition: var(--transicao-suave);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lista-itens li:hover,
+.card-item:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+    background: rgba(15, 23, 42, 0.7);
+}
+
+/* Alert Box */
+.alerta-status {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-md);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDADE E AJUSTES DE TELA
+   ========================================================================== */
+@media (max-width: 640px) {
+    .cabecalho-principal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .menu-navegacao {
+        flex-direction: column;
+    }
+
+    .btn-aba {
+        text-align: center;
+        width: 100%;
+    }
+
+    .aba-conteudo {
+        padding: 1.5rem;
+    }
+
+    .btn-primario {
+        width: 100%;
+    }
+}

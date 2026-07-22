@@ -1,0 +1,102 @@
+/* ==========================================================================
+   LAYOUT, CABEÇALHO & ESTRUTURA DE ABAS
+   ========================================================================== */
+.cabecalho-principal {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--cor-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cabecalho-principal h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: var(--gradiente-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.menu-navegacao {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.conteudo-principal {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.aba-conteudo {
+    background: var(--cor-bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--cor-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--sombra-card);
+    animation: esmaecerEntrada 0.4s ease-out forwards;
+}
+
+@keyframes esmaecerEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.aba-conteudo h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.aba-conteudo h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1.2rem;
+    background: var(--gradiente-primary);
+    border-radius: 2px;
+}
+
+.divisor {
+    border: none;
+    height: 1px;
+    background: var(--cor-border);
+    margin: 2.5rem 0;
+}
+
+@media (max-width: 640px) {
+    .cabecalho-principal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .menu-navegacao {
+        flex-direction: column;
+    }
+
+    .aba-conteudo {
+        padding: 1.5rem;
+    }
+}

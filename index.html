@@ -1,11 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aulas de GitHub com Git</title>
+    <title>Sistema de Questionários</title>
+
+    <!-- 1. Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 2. Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- 3. Animate.css (Animações prontas) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- 4. Font Awesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- 5. Estilos Customizados (Nossos módulos) -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    
+
+    <!-- Fundo Animado com Vanta.js -->
+    <div id="vanta-bg"></div>
+
+    <div class="content-wrapper">
+        <!-- HEADER COM BOOTSTRAP -->
+        <header
+            class="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-75 backdrop-blur sticky-top border-bottom border-secondary px-4">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-transparent bg-clip-text bg-gradient-primary" href="#">
+                    <i class="bi bi-patch-question-fill me-2"></i>Questionários
+                </a>
+
+                <nav class="nav nav-pills gap-2" id="menu-navegacao">
+                    <button class="nav-link active animate__animated animate__fadeIn"
+                        onclick="trocarAba('banco-perguntas', this)">
+                        <i class="bi bi-card-checklist me-1"></i> Banco de Perguntas
+                    </button>
+                    <button class="nav-link text-white animate__animated animate__fadeIn"
+                        onclick="trocarAba('gerenciar-formularios', this)">
+                        <i class="bi bi-folder-plus me-1"></i> Formulários
+                    </button>
+                    <button class="nav-link text-white animate__animated animate__fadeIn"
+                        onclick="trocarAba('responder-formulario', this)">
+                        <i class="bi bi-pencil-square me-1"></i> Responder
+                    </button>
+                    <button class="nav-link text-white animate__animated animate__fadeIn"
+                        onclick="trocarAba('relatorio-respostas', this)">
+                        <i class="bi bi-bar-chart-line me-1"></i> Respostas
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="container my-4">
+
+            <!-- 1. BANCO DE PERGUNTAS -->
+            <section id="banco-perguntas"
+                class="aba-conteudo card bg-dark text-white border-secondary shadow-lg p-4 animate__animated animate__fadeIn">
+                <h2 class="h4 mb-4 text-primary"><i class="bi bi-plus-circle me-2"></i>Cadastrar Nova Pergunta</h2>
+
+                <form id="form-pergunta">
+                    <div class="mb-3">
+                        <label for="enunciado" class="form-label">Enunciado da Pergunta *</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="enunciado"
+                            placeholder="Digite o enunciado..." required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tipo-pergunta" class="form-label">Tipo da Pergunta *</label>
+                        <select class="form-select bg-secondary text-white border-0" id="tipo-pergunta" required>
+                            <option value="">Selecione o tipo...</option>
+                            <option value="texto">Texto Curto</option>
+                            <option value="texto_longo">Parágrafo / Texto Longo</option>
+                            <option value="multipla_escolha">Múltipla Escolha (Radio)</option>
+                            <option value="checkbox">Caixas de Seleção (Checkbox)</option>
+                        </select>
+                    </div>
+
+                    <div id="area-alternativas" class="card bg-secondary p-3 mb-3 animate__animated animate__fadeIn"
+                        style="display: none;">
+                        <h5 class="h6"><i class="bi bi-list-task me-2"></i>Alternativas</h5>
+                        <div id="lista-alternativas" class="d-flex flex-column gap-2 mb-2"></div>
+                        <button type="button" id="btn-add-opcao"
+                            class="btn btn-outline-light btn-sm w-auto align-self-start">
+                            <i class="bi bi-plus-lg me-1"></i> Adicionar Opção
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">
+                        <i class="bi bi-check-circle me-1"></i> Salvar Pergunta
+                    </button>
+                </form>
+
+                <hr class="my-4 border-secondary">
+
+                <h3 class="h5 mb-3"><i class="bi bi-journal-text me-2"></i>Perguntas Cadastradas no Banco</h3>
+                <ul id="lista-banco-perguntas" class="list-group list-group-flush">
+                    <!-- Injetado via JS -->
+                </ul>
+            </section>
+
+            <!-- 2. GESTÃO DE FORMULÁRIOS -->
+            <section id="gerenciar-formularios"
+                class="aba-conteudo card bg-dark text-white border-secondary shadow-lg p-4 animate__animated animate__fadeIn"
+                style="display: none;">
+                <h2 class="h4 mb-4 text-primary"><i class="bi bi-file-earmark-plus me-2"></i>Criar / Editar Formulário
+                </h2>
+
+                <form id="form-criar-formulario">
+                    <div class="mb-3">
+                        <label for="titulo-form" class="form-label">Título do Formulário *</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="titulo-form"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao-form" class="form-label">Descrição</label>
+                        <textarea class="form-control bg-secondary text-white border-0" id="descricao-form"
+                            rows="2"></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="data-inicio" class="form-label">Data e Hora de Início</label>
+                            <input type="datetime-local" class="form-control bg-secondary text-white border-0"
+                                id="data-inicio">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="data-fim" class="form-label">Data e Hora de Fim</label>
+                            <input type="datetime-local" class="form-control bg-secondary text-white border-0"
+                                id="data-fim">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status-form" class="form-label">Status *</label>
+                        <select class="form-select bg-secondary text-white border-0" id="status-form" required>
+                            <option value="rascunho">Rascunho</option>
+                            <option value="publicado">Publicado</option>
+                            <option value="encerrado">Encerrado</option>
+                        </select>
+                    </div>
+
+                    <h5 class="h6 mb-2">Selecione as Perguntas (Mínimo 1) *</h5>
+                    <div id="selecao-perguntas-banco" class="card bg-secondary p-3 mb-3 d-flex flex-column gap-2">
+                        <!-- Checkboxes via JS -->
+                    </div>
+
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">
+                        <i class="bi bi-save me-1"></i> Salvar Formulário
+                    </button>
+                </form>
+
+                <hr class="my-4 border-secondary">
+
+                <h3 class="h5 mb-3"><i class="bi bi-collection me-2"></i>Formulários Cadastrados</h3>
+                <div id="lista-formularios" class="row g-3">
+                    <!-- Cards via JS -->
+                </div>
+            </section>
+
+            <!-- 3. RESPONDER FORMULÁRIO -->
+            <section id="responder-formulario"
+                class="aba-conteudo card bg-dark text-white border-secondary shadow-lg p-4 animate__animated animate__fadeIn"
+                style="display: none;">
+                <h2 class="h4 mb-4 text-primary"><i class="bi bi-pencil-square me-2"></i>Responder Formulário</h2>
+
+                <div id="mensagem-status-form" class="alert alert-warning" style="display: none;"></div>
+
+                <form id="form-resposta-usuario">
+                    <div class="mb-3">
+                        <label for="email-usuario" class="form-label">Seu E-mail *</label>
+                        <input type="email" class="form-control bg-secondary text-white border-0" id="email-usuario"
+                            placeholder="exemplo@email.com" required>
+                    </div>
+
+                    <hr class="my-4 border-secondary">
+
+                    <div id="perguntas-renderizadas" class="d-flex flex-column gap-3 mb-4"></div>
+
+                    <button type="submit" id="btn-enviar-resposta" class="btn btn-success px-4 fw-bold">
+                        <i class="bi bi-send me-1"></i> Enviar Respostas
+                    </button>
+                </form>
+            </section>
+
+            <!-- 4. RELATÓRIO DE RESPOSTAS -->
+            <section id="relatorio-respostas"
+                class="aba-conteudo card bg-dark text-white border-secondary shadow-lg p-4 animate__animated animate__fadeIn"
+                style="display: none;">
+                <h2 class="h4 mb-4 text-primary"><i class="bi bi-bar-chart-line me-2"></i>Respostas Recebidas</h2>
+
+                <div class="mb-4">
+                    <label for="filtro-form-respostas" class="form-label">Selecione um Formulário:</label>
+                    <select id="filtro-form-respostas" class="form-select bg-secondary text-white border-0">
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+
+                <div id="conteudo-respostas" class="table-responsive">
+                    <!-- Tabela via JS -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCRIPTS EXTERNOS (Three.js + Vanta.js Net + SweetAlert2 + Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/bootstrap.bundle.min.js"></script>
+
+    <!-- SCRIPTS DO PROJETO -->
+    <script src="js/app.js"></script>
+    <script src="js/banco-perguntas.js"></script>
+    <script src="js/formularios.js"></script>
+    <script src="js/respostas.js"></script>
 </body>
+
 </html>
