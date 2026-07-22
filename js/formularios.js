@@ -11,11 +11,13 @@ window.API_FORMULARIOS_URL = window.API_FORMULARIOS_URL || 'http://localhost:300
  */
 function gerarProximoIdFormulario(lista) {
     if (!lista || lista.length === 0) return "1";
+
     const idsNumericos = lista
         .map(item => parseInt(item.id, 10))
         .filter(num => !isNaN(num));
 
     if (idsNumericos.length === 0) return "1";
+
     const maiorId = Math.max(...idsNumericos);
     return String(maiorId + 1);
 }
@@ -156,13 +158,11 @@ async function salvarFormulario(event) {
     }
 
     const ehEdicao = Boolean(idEdicao);
-    const listaAtual = window.bancoFormularios || [];
 
-    // Gera ID sequencial numérico se for uma nova criação
-    const novoIdSequencial = gerarProximoIdFormulario(listaAtual);
-
+    // No POST (criação), NÃO mandamos a propriedade 'id' no objeto.
+    // O json-server vai ler o db.json (que agora tem IDs numéricos) e criar automaticamente 2, 3, 4...
     const objetoFormulario = {
-        id: ehEdicao ? idEdicao : novoIdSequencial,
+        ...(ehEdicao && { id: isNaN(Number(idEdicao)) ? idEdicao : Number(idEdicao) }),
         titulo,
         descricao,
         dataInicio: dataInicio || null,
@@ -185,7 +185,13 @@ async function salvarFormulario(event) {
         });
 
         if (res.ok) {
-            const formSalvo = await res.json();
+            let formSalvo = await res.json();
+
+            // Garantia: se a API gerou um ID hash aleatório no POST, nos forçamos o ID sequencial correto!
+            if (!ehEdicao && String(formSalvo.id) !== idDesejado) {
+                formSalvo.id = idDesejado;
+            }
+
             if (ehEdicao) {
                 const idx = window.bancoFormularios.findIndex(f => String(f.id) === String(idEdicao));
                 if (idx !== -1) window.bancoFormularios[idx] = formSalvo;
@@ -205,14 +211,21 @@ async function salvarFormulario(event) {
         }
     }
 
-    // Persiste no LocalStorage
-    if (typeof salvarEstadoStorage === 'function') {
-        salvarEstadoStorage();
+    // Persiste no LocalStorage diretamente
+    localStorage.setItem('formularios', JSON.stringify(window.bancoFormularios));
+
+    if (typeof window.salvarEstadoStorage === 'function') {
+        window.salvarEstadoStorage();
     }
 
     // Reset do Formulário e Renderização Atualizada
     cancelarEdicaoFormulario();
     renderizarListaFormularios();
+
+    // Atualiza o dropdown da tela de respostas se ela estiver visível
+    if (typeof window.carregarSelectFormularios === 'function') {
+        window.carregarSelectFormularios();
+    }
 
     Swal.fire({
         icon: 'success',
@@ -367,8 +380,13 @@ async function excluirFormulario(id) {
     }
 
     window.bancoFormularios = window.bancoFormularios.filter(f => String(f.id) !== String(id));
+    localStorage.setItem('formularios', JSON.stringify(window.bancoFormularios));
     if (typeof salvarEstadoStorage === 'function') salvarEstadoStorage();
+
     renderizarListaFormularios();
+    if (typeof window.carregarSelectFormularios === 'function') {
+        window.carregarSelectFormularios();
+    }
 
     Swal.fire({
         icon: 'success',
