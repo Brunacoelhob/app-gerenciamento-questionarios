@@ -1,0 +1,282 @@
+{
+  "perguntas": [
+    {
+      "id": "1",
+      "enunciado": "Qual o seu nível de satisfação com o nosso atendimento?",
+      "tipo": "multipla_escolha",
+      "alternativas": [
+        "Muito Satisfeito",
+        "Satisfeito",
+        "Neutro",
+        "Insatisfeito"
+      ],
+      "criadaEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "enunciado": "Quais recursos você mais utiliza na plataforma?",
+      "tipo": "checkbox",
+      "alternativas": [
+        "Relatórios",
+        "Dashboard",
+        "Exportação de Dados",
+        "Notificações"
+      ],
+      "criadaEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "enunciado": "Deixe suas sugestões de melhoria para os próximos meses:",
+      "tipo": "texto_longo",
+      "alternativas": [],
+      "criadaEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "enunciado": "Qual é a sua cidade e estado?",
+      "tipo": "texto",
+      "alternativas": [],
+      "criadaEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "enunciado": "Qual o nível de satisfação geral?",
+      "tipo": "multipla_escolha",
+      "alternativas": [
+        "Bom",
+        "Regular",
+        "Ótimo"
+      ],
+      "criadaEm": "2026-07-22T16:53:58.866Z"
+    },
+    {
+      "id": "YIXCCTKj8Os",
+      "enunciado": "Qual o nível de satisfação?",
+      "tipo": "checkbox",
+      "alternativas": [
+        "Bom",
+        "Regualar",
+        "Ótimo"
+      ],
+      "criadaEm": "2026-07-22T18:10:03.106Z"
+    },
+    {
+      "id": "6_KNKF9dTqM",
+      "enunciado": "Qual o nível de satisfação??????????????",
+      "tipo": "checkbox",
+      "alternativas": [
+        "fafsfa",
+        "fasfafsa",
+        "fasfas"
+      ],
+      "criadaEm": "2026-07-22T18:20:04.762Z"
+    }
+  ],
+  "formularios": [
+    {
+      "id": "1",
+      "titulo": "Pesquisa de Satisfação do Cliente 2026",
+      "descricao": "Questionário anual para mensurar a qualidade dos nossos serviços.",
+      "status": "publicado",
+      "dataInicio": "2026-01-01T00:00",
+      "dataFim": "2026-12-31T23:59",
+      "perguntasIds": [
+        "1",
+        "2",
+        "3"
+      ],
+      "criadoEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "titulo": "Feedback Interno da Equipe - Rascunho",
+      "descricao": "Formulário em construção para o time de desenvolvimento.",
+      "status": "rascunho",
+      "dataInicio": null,
+      "dataFim": null,
+      "perguntasIds": [
+        "3",
+        "4"
+      ],
+      "criadoEm": "2026-07-22T10:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "titulo": "Pesquisa de Clima Organizacional 2025",
+      "descricao": "Pesquisa encerrada do ano anterior.",
+      "status": "encerrado",
+      "dataInicio": "2025-01-01T00:00",
+      "dataFim": "2025-12-31T23:59",
+      "perguntasIds": [
+        "1",
+        "4"
+      ],
+      "criadoEm": "2025-01-01T10:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "titulo": "Clima de Pesquisa",
+      "descricao": "Tensão entre os brothers and sisters",
+      "status": "publicado",
+      "dataInicio": "2026-07-01T00:00",
+      "dataFim": "2026-12-31T23:59",
+      "perguntasIds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "criadoEm": "2026-07-22T17:00:47.128Z"
+    },
+    {
+      "id": "tRN9N18sobw",
+      "titulo": "Clima de Pesquisa",
+      "descricao": "testesegadhshdfb",
+      "dataInicio": "2026-07-22T15:19",
+      "dataFim": "2026-07-23T15:19",
+      "status": "publicado",
+      "perguntasIds": [
+        "3",
+        "4",
+        "5",
+        "YIXCCTKj8Os"
+      ],
+      "criadoEm": "2026-07-22T18:19:20.411Z"
+    },
+    {
+      "id": "sOyfdmE7zFo",
+      "titulo": "Clima de Pesquisabcbxbcxbcx",
+      "descricao": "bcbxcbxcbx",
+      "dataInicio": "2026-07-22T15:20",
+      "dataFim": "2026-07-23T15:20",
+      "status": "publicado",
+      "perguntasIds": [
+        "4",
+        "5",
+        "YIXCCTKj8Os",
+        "6_KNKF9dTqM"
+      ],
+      "criadoEm": "2026-07-22T18:20:30.969Z"
+    }
+  ],
+  "respostas": [
+    {
+      "id": "1",
+      "formularioId": "1",
+      "nome": "Desenvolvedor Teste",
+      "email": "dev.teste@exemplo.com",
+      "enviadoEm": "2026-03-15T14:30:00Z",
+      "respostas": [
+        {
+          "perguntaId": "1",
+          "valor": "Muito Satisfeito"
+        },
+        {
+          "perguntaId": "2",
+          "valor": [
+            "Relatórios",
+            "Dashboard"
+          ]
+        },
+        {
+          "perguntaId": "3",
+          "valor": "A interface visual está excelente, gostei do tema escuro!"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "formularioId": "1",
+      "nome": "Maria Silva",
+      "email": "maria.silva@empresa.com",
+      "enviadoEm": "2026-04-10T09:15:00Z",
+      "respostas": [
+        {
+          "perguntaId": "1",
+          "valor": "Satisfeito"
+        },
+        {
+          "perguntaId": "2",
+          "valor": [
+            "Exportação de Dados"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PfEZm9T7frc",
+      "formularioId": "1",
+      "nome": "Bruna Coelho",
+      "email": "bruna.coelho@itlean.com.br",
+      "enviadoEm": "2026-07-22T17:53:46.940Z",
+      "respostas": [
+        {
+          "perguntaId": "1",
+          "valor": "Muito Satisfeito"
+        },
+        {
+          "perguntaId": "2",
+          "valor": [
+            "Dashboard"
+          ]
+        },
+        {
+          "perguntaId": "3",
+          "valor": "teste"
+        }
+      ]
+    },
+    {
+      "id": "8sHpeQ6l15s",
+      "formularioId": "1",
+      "nome": "Maxsy",
+      "email": "grabriel.maxsy@itlean.com.br",
+      "enviadoEm": "2026-07-22T18:04:34.333Z",
+      "respostas": [
+        {
+          "perguntaId": "1",
+          "valor": "Neutro"
+        },
+        {
+          "perguntaId": "2",
+          "valor": [
+            "Dashboard"
+          ]
+        },
+        {
+          "perguntaId": "3",
+          "valor": "teste"
+        }
+      ]
+    },
+    {
+      "id": "kOHXSJJaZek",
+      "formularioId": "2uBuGDVKTCE",
+      "nome": "Bruna Coelho",
+      "email": "bruna.coelho@itlean.com.br",
+      "enviadoEm": "2026-07-22T18:11:27.319Z",
+      "respostas": [
+        {
+          "perguntaId": "3",
+          "valor": "fsfds"
+        },
+        {
+          "perguntaId": "4",
+          "valor": "fsfd"
+        },
+        {
+          "perguntaId": "5",
+          "valor": "Bom"
+        },
+        {
+          "perguntaId": "YIXCCTKj8Os",
+          "valor": [
+            "Bom"
+          ]
+        }
+      ]
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
