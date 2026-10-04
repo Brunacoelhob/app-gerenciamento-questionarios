@@ -4,9 +4,9 @@
    ========================================================================== */
 
 // Prevenção contra erros de redeclaração no console usando o escopo global window
-window.API_FORMULARIOS_URL = window.API_FORMULARIOS_URL || 'http://localhost:3000/formularios';
-window.API_RESPOSTAS_URL = window.API_RESPOSTAS_URL || 'http://localhost:3000/respostas';
-window.API_PERGUNTAS_URL = window.API_PERGUNTAS_URL || 'http://localhost:3000/perguntas';
+window.API_FORMULARIOS_URL = window.API_FORMULARIOS_URL || window.API_BASE + '/formularios';
+window.API_RESPOSTAS_URL = window.API_RESPOSTAS_URL || window.API_BASE + '/respostas';
+window.API_PERGUNTAS_URL = window.API_PERGUNTAS_URL || window.API_BASE + '/perguntas';
 
 let formularioAtualParaResponder = null;
 
@@ -228,8 +228,8 @@ async function carregarFormularioParaResposta() {
 function renderizarCamposQuestionario(formulario, container) {
     let html = `
         <div class="card p-4 mb-4 text-white border-secondary bg-dark rounded shadow-sm">
-            <h3 class="h4 text-info fw-bold mb-2">${formulario.titulo}</h3>
-            <p class="text-muted small mb-0">${formulario.descricao || 'Sem descrição cadastrada.'}</p>
+            <h3 class="h4 text-info fw-bold mb-2">${esc(formulario.titulo)}</h3>
+            <p class="text-muted small mb-0">${esc(formulario.descricao || 'Sem descrição cadastrada.')}</p>
         </div>
     `;
 
@@ -244,27 +244,27 @@ function renderizarCamposQuestionario(formulario, container) {
         const opcoes = p.alternativas || p.opcoes || [];
 
         if (p.tipo === 'texto_curto' || p.tipo === 'texto') {
-            htmlInputs = `<input type="text" class="form-control bg-dark text-white border-secondary input-resposta" name="p_${p.id}" maxlength="200" required placeholder="Digite sua resposta (máx. 200 caracteres)...">`;
+            htmlInputs = `<input type="text" class="form-control bg-dark text-white border-secondary input-resposta" name="p_${esc(p.id)}" maxlength="200" required placeholder="Digite sua resposta (máx. 200 caracteres)...">`;
         } else if (p.tipo === 'texto_longo') {
             htmlInputs = `
-                <textarea class="form-control bg-dark text-white border-secondary input-resposta" name="p_${p.id}" rows="4" maxlength="500" required placeholder="Sua resposta detalhada (máx. 500 caracteres)..." oninput="atualizarContadorChar(this, 'cnt_${p.id}')"></textarea>
-                <div class="text-end text-muted small mt-1"><span id="cnt_${p.id}">0</span>/500 caracteres</div>
+                <textarea class="form-control bg-dark text-white border-secondary input-resposta" name="p_${esc(p.id)}" rows="4" maxlength="500" required placeholder="Sua resposta detalhada (máx. 500 caracteres)..." oninput="atualizarContadorChar(this, 'cnt_${idSeguro(p.id)}')"></textarea>
+                <div class="text-end text-muted small mt-1"><span id="cnt_${esc(p.id)}">0</span>/500 caracteres</div>
             `;
         } else if (p.tipo === 'multipla_escolha') {
             htmlInputs = opcoes.map((op, oIdx) => `
                 <div class="form-check my-2 p-2 rounded option-hover border border-secondary bg-dark">
-                    <input class="form-check-input ms-1 me-2 cursor-pointer" type="radio" name="p_${p.id}" id="p_${p.id}_${oIdx}" value="${op}" required style="transform: scale(1.2);">
-                    <label class="form-check-label text-white cursor-pointer w-100 ps-1 fw-medium" for="p_${p.id}_${oIdx}">
-                        <i class="bi bi-circle me-1 text-info"></i> ${op}
+                    <input class="form-check-input ms-1 me-2 cursor-pointer" type="radio" name="p_${esc(p.id)}" id="p_${esc(p.id)}_${oIdx}" value="${esc(op)}" required style="transform: scale(1.2);">
+                    <label class="form-check-label text-white cursor-pointer w-100 ps-1 fw-medium" for="p_${esc(p.id)}_${oIdx}">
+                        <i class="bi bi-circle me-1 text-info"></i> ${esc(op)}
                     </label>
                 </div>
             `).join('');
         } else if (p.tipo === 'checkbox') {
             htmlInputs = opcoes.map((op, oIdx) => `
                 <div class="form-check my-2 p-2 rounded option-hover border border-secondary bg-dark">
-                    <input class="form-check-input check-p-${p.id} ms-1 me-2 cursor-pointer" type="checkbox" value="${op}" id="p_${p.id}_${oIdx}" style="transform: scale(1.2);">
-                    <label class="form-check-label text-white cursor-pointer w-100 ps-1 fw-medium" for="p_${p.id}_${oIdx}">
-                        <i class="bi bi-square me-1 text-info"></i> ${op}
+                    <input class="form-check-input check-p-${esc(p.id)} ms-1 me-2 cursor-pointer" type="checkbox" value="${esc(op)}" id="p_${esc(p.id)}_${oIdx}" style="transform: scale(1.2);">
+                    <label class="form-check-label text-white cursor-pointer w-100 ps-1 fw-medium" for="p_${esc(p.id)}_${oIdx}">
+                        <i class="bi bi-square me-1 text-info"></i> ${esc(op)}
                     </label>
                 </div>
             `).join('');
@@ -273,7 +273,7 @@ function renderizarCamposQuestionario(formulario, container) {
         html += `
             <div class="card p-3 mb-3 text-white border-secondary bg-dark rounded shadow-sm">
                 <label class="form-label fw-bold mb-3 text-white fs-6">
-                    <span class="text-info">${idx + 1}.</span> ${p.enunciado} <span class="text-danger">*</span>
+                    <span class="text-info">${idx + 1}.</span> ${esc(p.enunciado)} <span class="text-danger">*</span>
                 </label>
                 <div>${htmlInputs}</div>
             </div>

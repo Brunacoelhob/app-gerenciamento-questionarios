@@ -4,7 +4,7 @@
    ========================================================================== */
 
 // Prevenção contra erros de redeclaração usando o escopo global window
-window.API_FORMULARIOS_URL = window.API_FORMULARIOS_URL || 'http://localhost:3000/formularios';
+window.API_FORMULARIOS_URL = window.API_FORMULARIOS_URL || window.API_BASE + '/formularios';
 
 /**
  * Função Utilitária: Gera o próximo ID numérico sequencial (1, 2, 3, 4...)
@@ -69,9 +69,9 @@ function renderizarSelecaoPerguntasBanco(selecionados = []) {
         html += `
             <label class="d-flex align-items-center gap-2 p-2 rounded cursor-pointer item-selecao-pergunta option-hover" 
                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);">
-                <input type="checkbox" class="checkbox-pergunta-form form-check-input mt-0 ms-1" value="${p.id}" ${isChecked} style="transform: scale(1.1);">
+                <input type="checkbox" class="checkbox-pergunta-form form-check-input mt-0 ms-1" value="${esc(p.id)}" ${isChecked} style="transform: scale(1.1);">
                 <span class="text-info fs-6 ms-1"><i class="bi ${iconeTipo}"></i></span>
-                <span class="text-white flex-grow-1 fw-medium">${p.enunciado}</span>
+                <span class="text-white flex-grow-1 fw-medium">${esc(p.enunciado)}</span>
             </label>
         `;
     });
@@ -174,7 +174,7 @@ async function salvarFormulario(event) {
             : new Date().toISOString()
     };
 
-    const url = ehEdicao ? `${window.API_FORMULARIOS_URL}/${idEdicao}` : window.API_FORMULARIOS_URL;
+    const url = ehEdicao ? `${window.API_FORMULARIOS_URL}/${encodeURIComponent(idEdicao)}` : window.API_FORMULARIOS_URL;
     const metodo = ehEdicao ? 'PUT' : 'POST';
 
     try {
@@ -309,13 +309,13 @@ function renderizarListaFormularios() {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
-                            <h5 class="card-title text-info mb-1">${form.titulo}</h5>
-                            <small class="text-muted">ID: <strong>${form.id}</strong></small>
+                            <h5 class="card-title text-info mb-1">${esc(form.titulo)}</h5>
+                            <small class="text-muted">ID: <strong>${esc(form.id)}</strong></small>
                         </div>
-                        <span class="badge ${badgeClasse} text-uppercase">${form.status}</span>
+                        <span class="badge ${badgeClasse} text-uppercase">${esc(form.status)}</span>
                     </div>
 
-                    <p class="card-text text-light opacity-75 fs-6">${form.descricao || 'Sem descrição.'}</p>
+                    <p class="card-text text-light opacity-75 fs-6">${esc(form.descricao || 'Sem descrição.')}</p>
 
                     <div class="d-flex flex-wrap gap-3 my-2 text-muted small">
                         <div><i class="bi bi-question-circle me-1"></i>${qtdPerguntas} pergunta(s)</div>
@@ -324,10 +324,10 @@ function renderizarListaFormularios() {
                     </div>
 
                     <div class="d-flex justify-content-end gap-2 mt-3 pt-2 border-top border-secondary opacity-75">
-                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarFormulario('${form.id}')" title="Editar Formulário">
+                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarFormulario('${idSeguro(form.id)}')" title="Editar Formulário">
                             <i class="bi bi-pencil me-1"></i> Editar
                         </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="excluirFormulario('${form.id}')" title="Excluir Formulário">
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="excluirFormulario('${idSeguro(form.id)}')" title="Excluir Formulário">
                             <i class="bi bi-trash me-1"></i> Excluir
                         </button>
                     </div>

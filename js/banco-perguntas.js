@@ -4,7 +4,7 @@
    ========================================================================== */
 
 // Prevenção contra erros de redeclaração usando o escopo global window
-window.API_PERGUNTAS_URL = window.API_PERGUNTAS_URL || 'http://localhost:3000/perguntas';
+window.API_PERGUNTAS_URL = window.API_PERGUNTAS_URL || window.API_BASE + '/perguntas';
 
 /**
  * Inicializa ouvintes de eventos e carrega a lista inicial da API ou LocalStorage
@@ -83,7 +83,7 @@ function adicionarCampoAlternativa(valor = '') {
     const div = document.createElement('div');
     div.className = 'd-flex gap-2 mb-2 item-alternativa animate__animated animate__fadeIn';
     div.innerHTML = `
-        <input type="text" class="form-control bg-dark text-white border-secondary campo-input input-alternativa" placeholder="Digite o texto da alternativa..." value="${valor}">
+        <input type="text" class="form-control bg-dark text-white border-secondary campo-input input-alternativa" placeholder="Digite o texto da alternativa..." value="${esc(valor)}">
         <button class="btn btn-outline-danger btn-excluir-opcao d-inline-flex align-items-center justify-content-center" type="button" onclick="removerCampoAlternativa(this)" title="Remover alternativa" style="width: 38px; height: 38px;">
             <i class="bi bi-x-lg"></i>
         </button>
@@ -231,7 +231,7 @@ async function salvarPergunta(event) {
             : new Date().toISOString()
     };
 
-    const url = ehEdicao ? `${window.API_PERGUNTAS_URL}/${idEdicao}` : window.API_PERGUNTAS_URL;
+    const url = ehEdicao ? `${window.API_PERGUNTAS_URL}/${encodeURIComponent(idEdicao)}` : window.API_PERGUNTAS_URL;
     const metodo = ehEdicao ? 'PUT' : 'POST';
 
     try {
@@ -359,7 +359,7 @@ function renderizarListaPerguntas() {
     window.bancoPerguntas.forEach((p) => {
         let altBadges = (p.alternativas && p.alternativas.length > 0)
             ? `<div class="mt-2 d-flex flex-wrap gap-1">
-                ${p.alternativas.map(a => `<span class="badge bg-dark border border-secondary text-info">${a}</span>`).join('')}
+                ${p.alternativas.map(a => `<span class="badge bg-dark border border-secondary text-info">${esc(a)}</span>`).join('')}
                </div>`
             : '';
 
@@ -373,15 +373,15 @@ function renderizarListaPerguntas() {
         html += `
             <li class="item-lista d-flex justify-content-between align-items-center mb-3 p-3 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
                 <div class="flex-grow-1 me-3">
-                    <div class="fw-bold text-white fs-5 mb-1">${p.enunciado}</div>
+                    <div class="fw-bold text-white fs-5 mb-1">${esc(p.enunciado)}</div>
                     <small class="text-info fw-semibold"><i class="bi bi-tag-fill me-1"></i>Tipo: ${rotuloTipo}</small>
                     ${altBadges}
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-warning btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" onclick="editarPergunta('${p.id}')" title="Editar Pergunta">
+                    <button type="button" class="btn btn-outline-warning btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" onclick="editarPergunta('${idSeguro(p.id)}')" title="Editar Pergunta">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" onclick="excluirPergunta('${p.id}')" title="Excluir Pergunta">
+                    <button type="button" class="btn btn-outline-danger btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" onclick="excluirPergunta('${idSeguro(p.id)}')" title="Excluir Pergunta">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
@@ -404,7 +404,7 @@ async function excluirPergunta(id) {
 
     if (!temRespostaVinculada) {
         try {
-            const resRespostas = await fetch(`http://localhost:3000/respostas`);
+            const resRespostas = await fetch(`${window.API_BASE}/respostas`);
             if (resRespostas.ok) {
                 const respostasServidor = await resRespostas.json();
                 temRespostaVinculada = respostasServidor.some(r =>

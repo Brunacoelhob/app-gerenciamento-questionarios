@@ -4,7 +4,7 @@
    ========================================================================== */
 
 // Prevenção contra erros de redeclaração usando o objeto global window
-window.API_CONSULTA_URL = window.API_CONSULTA_URL || 'http://localhost:3000';
+window.API_CONSULTA_URL = window.API_CONSULTA_URL || window.API_BASE;
 
 /**
  * Inicializa os ouvintes da tela de listagem de respostas
@@ -52,7 +52,7 @@ async function carregarOpcoesFormularios() {
 
     let html = '<option value="" selected disabled>Selecione um formulário para ver as respostas...</option>';
     formularios.forEach(f => {
-        html += `<option value="${f.id}">${f.titulo} (ID: ${f.id})</option>`;
+        html += `<option value="${esc(f.id)}">${esc(f.titulo)} (ID: ${esc(f.id)})</option>`;
     });
 
     select.innerHTML = html;
@@ -136,15 +136,15 @@ async function carregarRespostasDoFormulario(event) {
         html += `
             <tr class="border-bottom border-secondary opacity-90">
                 <th scope="row" class="ps-3 text-muted">${index + 1}</th>
-                <td class="fw-bold text-white">${r.nome || 'Não informado'}</td>
-                <td class="text-info">${r.email || 'Não informado'}</td>
+                <td class="fw-bold text-white">${esc(r.nome || 'Não informado')}</td>
+                <td class="text-info">${esc(r.email || 'Não informado')}</td>
                 <td><small class="text-muted"><i class="bi bi-clock me-1"></i>${dataFormatada}</small></td>
                 <td class="text-center pe-3">
                     <div class="d-flex justify-content-center gap-2">
-                        <button class="btn btn-sm btn-outline-info rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" onclick="verDetalheResposta('${r.id}', '${formularioId}')" title="Ver respostas completas">
+                        <button class="btn btn-sm btn-outline-info rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" onclick="verDetalheResposta('${idSeguro(r.id)}', '${idSeguro(formularioId)}')" title="Ver respostas completas">
                             <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" onclick="excluirResposta('${r.id}', '${formularioId}')" title="Excluir resposta">
+                        <button class="btn btn-sm btn-outline-danger rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" onclick="excluirResposta('${idSeguro(r.id)}', '${idSeguro(formularioId)}')" title="Excluir resposta">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -198,26 +198,26 @@ async function verDetalheResposta(respostaId, formularioId) {
     }
 
     let htmlDetalhes = `<div class="text-start">`;
-    htmlDetalhes += `<p class="mb-1"><strong>Respondente:</strong> <span class="text-info">${resposta.nome || 'Não informado'}</span></p>`;
-    htmlDetalhes += `<p class="mb-2"><strong>E-mail:</strong> ${resposta.email || 'Não informado'}</p>`;
+    htmlDetalhes += `<p class="mb-1"><strong>Respondente:</strong> <span class="text-info">${esc(resposta.nome || 'Não informado')}</span></p>`;
+    htmlDetalhes += `<p class="mb-2"><strong>E-mail:</strong> ${esc(resposta.email || 'Não informado')}</p>`;
     htmlDetalhes += `<p class="border-bottom border-secondary pb-2 mb-3 text-muted small"><strong>Data de Envio:</strong> ${new Date(resposta.enviadoEm).toLocaleString('pt-BR')}</p>`;
     htmlDetalhes += `<h6 class="mt-3 text-info fw-bold"><i class="bi bi-card-checklist me-1"></i> Respostas Fornecidas:</h6>`;
 
     if (resposta.respostas && resposta.respostas.length > 0) {
         resposta.respostas.forEach(item => {
             const perguntaObj = todasPerguntas.find(p => String(p.id) === String(item.perguntaId));
-            const enunciado = perguntaObj ? perguntaObj.enunciado : `Pergunta ID: ${item.perguntaId}`;
+            const enunciado = perguntaObj ? perguntaObj.enunciado : `Pergunta ID: ${item.perguntaId}`; // escapado ao montar o HTML
 
-            let valorFormatado = item.valor;
+            let valorFormatado = typeof item.valor === 'string' ? esc(item.valor) : item.valor;
             if (Array.isArray(item.valor)) {
-                valorFormatado = item.valor.map(v => `<span class="badge bg-dark border border-secondary text-info me-1">${v}</span>`).join(' ');
+                valorFormatado = item.valor.map(v => `<span class="badge bg-dark border border-secondary text-info me-1">${esc(v)}</span>`).join(' ');
             } else if (!valorFormatado) {
                 valorFormatado = '<em class="text-muted">Sem resposta</em>';
             }
 
             htmlDetalhes += `
                 <div class="mb-3 p-3 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
-                    <div class="fw-bold text-white mb-1 fs-6">${enunciado}</div>
+                    <div class="fw-bold text-white mb-1 fs-6">${esc(enunciado)}</div>
                     <div class="text-light opacity-90">${valorFormatado}</div>
                 </div>
             `;
